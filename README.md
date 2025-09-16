@@ -1,6 +1,7 @@
 # Project Instructions
 
 [Write your project-specific instructions here]
+Primary difference for this is that it will be setup for uv over conda (yet to be implemented) otherwise its the same as Boyuans .
 
 If you find this research template helpful to you, please cite us as
 
