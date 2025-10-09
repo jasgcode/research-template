@@ -1,0 +1,43 @@
+Bootstrap: docker
+From: nvidia/cuda:12.4.0-base-ubuntu22.04
+
+%files
+    pyproject.toml /app/
+    
+%post
+    # Install Python and dependencies
+    apt-get update && apt-get install -y \
+        python3.11 \
+        python3-pip \
+        curl \
+        git \
+        && rm -rf /var/lib/apt/lists/*
+    
+    # Install uv
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    mkdir -p /root/.local/bin  # Ensure directory exists
+    if [ -f /root/.local/bin/uv ]; then
+        cp /root/.local/bin/uv /usr/local/bin/uv
+    else
+        # Alternative: download directly
+        curl -LsSf https://github.com/astral-sh/uv/releases/latest/download/uv-x86_64-unknown-linux-gnu.tar.gz | tar xzf - -C /usr/local/bin
+    fi 
+
+    which uv
+
+    uv --version
+
+    # Install your Python packages
+    cd /app
+    uv sync 
+    
+    # Cleanup
+    apt-get clean
+
+%environment
+    export PATH="/root/.local/bin:/app/.venv/bin:$PATH"
+    export LD_LIBRARY_PATH="/usr/local/cuda/lib64:${LD_LIBRARY_PATH}"
+
+%runscript
+    cd /app
+    exec "$@"

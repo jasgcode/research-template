@@ -1,9 +1,10 @@
 # Project Instructions
 
-[Write your project-specific instructions here]
-Primary difference for this is that it will be setup for uv over conda (yet to be implemented) otherwise its the same as Boyuans .
+This research template is actively being updated
 
-If you find this research template helpful to you, please cite us as
+Primary difference for this is that it will be setup for uv over conda (yet to be implemented) otherwise its the same as Boyuans.
+
+If you find this research template helpful to you, please acknowledge this repo and cite Boyuan as
 
 ```
 @article{chen2025diffusion,
@@ -15,12 +16,11 @@ If you find this research template helpful to you, please cite us as
   year={2025}
 }
 ```
-
 # Infra instructions
 
 This repo is using [Boyuan Chen](https://boyuan.space/)'s research template [repo](https://github.com/buoyancy99/research-template). By its license, we just ask you to keep the above sentence and links in `README.md` and the `LICENSE` file to credit the author.
 
-All experiments can be launched via `python -m main +name=xxxx {options}` where you can find more details later in this article.
+All experiments can be launched via `uv run -m main +name=xxxx {options}` where you can find more details later in this article.
 
 For slurm clusters, we provide an extremely useful utility to help you run programs without engineering command or writing bash scripts.
 e.g. for mit_vision cluster, you can simply run `python -m main {options} cluster=mit_vision` on login node.
@@ -28,11 +28,19 @@ It will automatically generate slurm scripts and run them for you on a compute n
 `cluster.params.num_gpus=8` to command (see more in `configuration/cluster/base_slurm.yaml`) to change resources.
 It's also easy to add your own slurm by following the `Add slurm clusters` section.
 
+## Using this template
+
+
+## Singularity 
+A focal point of this template is reproducibility, we combine singularity containers with uv for more replicable work. There is a basic singularity definition file provided which installs uv and configures it for the container. A key thing about it is that it will automatically mount the current directory you're working on. When you are ready to run a job or plan to use it on HPC, be sure to use this in the definition file. 
+```
+uv sync --frozen
+```
+this will ensure that uv follows the uv lock.
+
 ## Setup
 
-Run `conda create python=3.10 -n {your_env_name}` to create environment.
-Run `conda activate {your_env_name}` to activate this environment.
-Run `pip install -r requirements.txt` to install all dependencies.
+
 
 [Sign up](https://wandb.ai/site) a wandb account for cloud logging and checkpointing. In command line, run `wandb login` to login.
 
@@ -43,7 +51,7 @@ If using VScode, we recommend installing [Black Formatter](https://marketplace.v
 ## Run built-in example
 
 Run an example machine-learning experiment with a specified dataset and algorithm:
-`python -m main +name=xxxx experiment=example_classification dataset=example_cifar10 algorithm=example_classifier`
+`uv run -m main +name=xxxx experiment=example_classification dataset=example_cifar10 algorithm=example_classifier`
 
 The files associated with this example are:
 
@@ -57,7 +65,7 @@ The files associated with this example are:
 </ul>
 
 Run a generic example experiment (not necessarily ML):
-`python -m main +name=yyyy experiment=hello_world algorithm=hello_algo1`
+`uv run -m main +name=yyyy experiment=hello_world algorithm=hello_algo1`
 
 The files associated with this example are:
 
@@ -69,7 +77,7 @@ The files associated with this example are:
 </ul>
 
 Run a generic example experiment, with different algorithm:
-`python -m main +name=zzzz experiment=hello_world algorithm=hello_algo2`
+`uv python -m main +name=zzzz experiment=hello_world algorithm=hello_algo2`
 
 <ul>
   <li>algorithms/examples/helloworld/example_algos.py</li>
@@ -147,7 +155,6 @@ If you are from an academic institute, feel free to create a pull request to add
 It's very easy to add your own slurm clusters via adding a yaml file in `configurations/cluster`. You can take a look
 at `configurations/cluster/mit_vision.yaml` for example. For multi-node training, `configurations/cluster/harvard_fas.yaml` is a good example.
 Some cluster has extra security and has login node offline, such as mit supercloud, the script will still automatically sync wandb logging to cloud with <1min latency if you set one flags following `configurations/cluster/mit_supercloud.yaml`. 
-
 
 ## Feature Roadmap
 

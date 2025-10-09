@@ -1,0 +1,26 @@
+is_compute_node_offline: False  # many slurm systems only allows internet on login node, not compute node
+
+params:
+  allocation: 
+  env_name: template  
+  nodes: # add if necessary 
+  num_gpus: 1 # Depending on which gpu you want do H100:8 A100:8
+  constraint: sxm # use SXM if using multiple gpus or need lots of vram, otherwise use pcie
+  num_cpus: 32
+  memory: 32G
+  time: "24:0:0" # Acceptable time formats include "minutes", "minutes:seconds", "hours:minutes:seconds", "days-hours", "days-hours:minutes" and "days-hours:minutes:seconds".
+  email: null
+
+launch_template: |
+  #!/bin/bash
+
+  # SBATCH -A {allocation}
+  #SBATCH --gres=gpu:{num_gpus}
+  #SBATCH --constraint={constraint}
+  #SBATCH --cpus-per-task={num_cpus}
+  #SBATCH --mem={memory}
+  #SBATCH --time={time}
+
+  source ~/.bashrc
+  cd {project_root}
+  uv python -m main {python_args}

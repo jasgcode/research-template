@@ -12,11 +12,11 @@
       "console": "integratedTerminal",
       "justMyCode": true
     },
-    {
+      {
       "name": "main.py",
       "type": "python",
       "request": "launch",
-      "program": "main.py",
+      "module": "main",
       "console": "integratedTerminal",
       "justMyCode": true,
       "args": ["+name=debug", "debug=True"],
