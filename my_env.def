@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: nvidia/cuda:12.4.0-base-ubuntu22.04
+From: nvidia/cuda:12.6.1-base-ubuntu24.04
 
 %files
     pyproject.toml /app/
@@ -7,10 +7,15 @@ From: nvidia/cuda:12.4.0-base-ubuntu22.04
 %post
     # Install Python and dependencies
     apt-get update && apt-get install -y \
-        python3.11 \
+        python3.12 \
         python3-pip \
         curl \
         git \
+        libglib2.0-0 \
+        libsm6 \
+        libxrender1 \
+        libxext6 \
+        libfontconfig1 \
         && rm -rf /var/lib/apt/lists/*
     
     # Install uv
@@ -22,20 +27,29 @@ From: nvidia/cuda:12.4.0-base-ubuntu22.04
         # Alternative: download directly
         curl -LsSf https://github.com/astral-sh/uv/releases/latest/download/uv-x86_64-unknown-linux-gnu.tar.gz | tar xzf - -C /usr/local/bin
     fi 
-
+    # Ensure container-local venv and point project .venv at it so uv won't write into the mount
+    mkdir -p /root/.venv
+    # Remove any existing .venv in the mounted /app so we can symlink
+    if [ -e /app/.venv ]; then
+        rm -rf /app/.venv
+    fi
+    ln -s /root/.venv /app/.venv
+    chown -R root:root /root/.venv
     which uv
 
     uv --version
 
     # Install your Python packages
     cd /app
-    uv sync 
+    # Tell uv to create venv in a specific location
+    UV_PROJECT_ENVIRONMENT=/opt/venv uv sync
     
     # Cleanup
     apt-get clean
 
 %environment
-    export PATH="/root/.local/bin:/app/.venv/bin:$PATH"
+    export UV_PROJECT_ENVIRONMENT="/opt/venv"
+    export PATH="/opt/venv/bin:$PATH"
     export LD_LIBRARY_PATH="/usr/local/cuda/lib64:${LD_LIBRARY_PATH}"
 
 %runscript

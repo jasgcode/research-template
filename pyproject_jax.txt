@@ -1,0 +1,36 @@
+Replace pyproject.toml if with this if you want to use jax instead of torch
+[project]
+name = "research-template"
+
+version = "0.1.1"
+description = "A Flexible research template adapted from Boyuan Chen's research template for experiments and uses uv for reproducibility"
+readme = "README.md"
+
+requires-python = ">=3.10"
+dependencies = [
+    'jax',
+    'jaxlib',  # or 'jax[cuda12]' for GPU support
+    'flax',
+    'optax',  # JAX optimization library (replaces torch.optim)
+    'orbax-checkpoint',  # for model checkpointing
+    'wandb',
+    'hydra-core',
+    'pyyaml',
+    'omegaconf',
+    'colorama',
+    'tqdm',
+    'opencv-python',
+    'matplotlib',
+    'click',
+    'moviepy',
+    'imageio',
+    'einops',
+    'wandb-osh',
+    'tensorflow-datasets',  # optional but very useful for data loading
+    'grain',  # or use torch DataLoader actually, it works with JAX!
+]
+# Optional dependency args, use for things like --no-build-isolation
+[project.optional.dependencies]
+[tool.uv]
+[tool.uv.extra-build-dependencies]
+[tool.uv.extra-build-variables]

@@ -1,7 +1,6 @@
 is_compute_node_offline: False  # many slurm systems only allows internet on login node, not compute node
 
 params:
-  env_name: template  # change this to the name of your conda environment
   num_gpus: 1 # some clusters use something like "h100:4" to request 4 NVIDA H100 GPUs
   num_cpus: 32
   memory: 32G
@@ -21,7 +20,6 @@ launch_template: |
   #SBATCH --mem={memory}
   #SBATCH --time={time}
 
-  source ~/.bashrc
-  conda activate {env_name}
+  source ~/.bashr
   cd {project_root}
-  python -m main {python_args}
+  uv python -m main {python_args}
