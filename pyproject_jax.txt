@@ -8,11 +8,11 @@ readme = "README.md"
 
 requires-python = ">=3.10"
 dependencies = [
-    'jax',
-    'jaxlib',  # or 'jax[cuda12]' for GPU support
+    'jax[cuda12]',
+    'jaxlib', 
     'flax',
-    'optax',  # JAX optimization library (replaces torch.optim)
-    'orbax-checkpoint',  # for model checkpointing
+    'optax',  
+    'orbax-checkpoint',  
     'wandb',
     'hydra-core',
     'pyyaml',
@@ -26,8 +26,10 @@ dependencies = [
     'imageio',
     'einops',
     'wandb-osh',
-    'tensorflow-datasets',  # optional but very useful for data loading
-    'grain',  # or use torch DataLoader actually, it works with JAX!
+    'tensorflow-datasets',  
+    'grain',
+    'safetensors',
+    'trio'
 ]
 # Optional dependency args, use for things like --no-build-isolation
 [project.optional.dependencies]

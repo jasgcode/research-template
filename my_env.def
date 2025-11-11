@@ -20,8 +20,8 @@ From: nvidia/cuda:12.6.1-base-ubuntu24.04
     
     # Install uv
     curl -LsSf https://astral.sh/uv/install.sh | sh
-    mkdir -p /root/.local/bin  # Ensure directory exists
-    if [ -f /root/.local/bin/uv ]; then
+    mkdir -p /root/.local/bin  
+    if [ -f /root/.local/bin/uv ]; 
         cp /root/.local/bin/uv /usr/local/bin/uv
     else
         # Alternative: download directly
