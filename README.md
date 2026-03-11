@@ -2,7 +2,7 @@
 
 This research template is actively being updated
 
-Primary difference for this is that it will be setup for uv over conda (yet to be implemented) otherwise its the same as Boyuans.
+Primary difference for this is that its designed to use uv and Docker otherwise its the same as Boyuans.
 
 If you find this research template helpful to you, please acknowledge this repo and cite Boyuan as
 

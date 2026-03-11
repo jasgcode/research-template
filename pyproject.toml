@@ -6,7 +6,7 @@ description = "A Flexible research template adapted from Boyuan Chen's research 
  for experiments and uses uv for reproducibility"
 readme = "README.md"
 
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = ['torch',
 'torchvision',
 'wandb',
